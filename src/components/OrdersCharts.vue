@@ -1,6 +1,6 @@
 <template>
   <div class="bg-white p-6 rounded-lg shadow-md mb-6">
-    <h3 class="text-lg font-semibold mb-4 text-gray-800">График продаж (пример)</h3>
+    <h3 class="text-lg font-semibold mb-4 text-gray-800">График заказов (пример)</h3>
     <div class="overflow-x-auto">
       <div class="h-64 min-w-[600px]">
         <Bar :data="chartData" :options="chartOptions" />
@@ -15,12 +15,12 @@ import { Chart, BarElement, CategoryScale, LinearScale, Tooltip, Legend } from '
 Chart.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend)
 
 const chartData = {
-  labels: ['A', 'B', 'C'],
+  labels: ['Заказ 1', 'Заказ 2', 'Заказ 3'],
   datasets: [
     {
-      label: 'Пример',
-      data: [10, 20, 30],
-      backgroundColor: '#3b82f6',
+      label: 'Пример заказов',
+      data: [15, 25, 35],
+      backgroundColor: '#10b981',
     },
   ],
 }

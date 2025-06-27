@@ -9,6 +9,7 @@
     <SalesFilters />
     <SalesTable />
     <Pagination
+      v-if="hasData && totalPages > 1"
       :current-page="salesStore.currentPage"
       :total-pages="salesStore.totalPages"
       :total="salesStore.totalItems"
@@ -19,7 +20,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { onMounted, computed } from 'vue'
 import { useSalesStore } from '@/stores/sales'
 import SalesFilters from '@/components/SalesFilters.vue'
 import SalesCharts from '@/components/SalesCharts.vue'
@@ -27,6 +28,10 @@ import SalesTable from '@/components/SalesTable.vue'
 import Pagination from '@/components/Pagination.vue'
 
 const salesStore = useSalesStore()
+
+// Геттеры для условного отображения
+const hasData = computed(() => salesStore.hasData)
+const totalPages = computed(() => salesStore.totalPages)
 
 // Загрузка данных при монтировании компонента
 onMounted(() => {
