@@ -16,10 +16,6 @@ const protocol = import.meta.env.VITE_PROTOCOL || 'http://'
 const host = import.meta.env.VITE_HOST || '109.73.206.144'
 const port = import.meta.env.VITE_PORT || '6969'
 
-// Логируем для отладки
-console.log('API Config:', { protocol, host, port })
-console.log('Base URL:', `${protocol}${host}:${port}/api`)
-
 // Создаем экземпляр axios с базовой конфигурацией
 const api = axios.create({
   baseURL: `${protocol}${host}:${port}/api`,
@@ -32,14 +28,6 @@ api.interceptors.request.use((config) => {
   if (key) {
     config.params = { ...config.params, key }
   }
-
-  // Логируем запрос для отладки
-  console.log('API Request:', {
-    url: config.url,
-    method: config.method,
-    params: config.params,
-    baseURL: config.baseURL,
-  })
 
   return config
 })
@@ -65,9 +53,6 @@ export const stocksApi = {
       page,
       limit,
     }
-
-    console.log('Stocks API - Filters received:', filters) // Логирование полученных фильтров
-    console.log('Stocks API - Final params:', params) // Логирование финальных параметров
 
     const response = await api.get<ApiResponse<StockItem>>('/stocks', { params })
     return response.data
