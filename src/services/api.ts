@@ -12,9 +12,9 @@ import type {
 } from '@/types/api'
 
 // Получаем переменные окружения с fallback значениями
-const protocol = import.meta.env.VITE_PROTOCOL || 'http://'
-const host = import.meta.env.VITE_HOST || '109.73.206.144'
-const port = import.meta.env.VITE_PORT || '6969'
+const protocol = import.meta.env.VITE_PROTOCOL
+const host = import.meta.env.VITE_HOST
+const port = import.meta.env.VITE_PORT
 
 // Создаем экземпляр axios с базовой конфигурацией
 const api = axios.create({
@@ -24,7 +24,7 @@ const api = axios.create({
 
 // Интерцептор для добавления ключа авторизации к каждому запросу
 api.interceptors.request.use((config) => {
-  const key = import.meta.env.VITE_KEY || 'E6kUTYrYwZq2tN4QEtyzsbEBk3ie'
+  const key = import.meta.env.VITE_KEY
   if (key) {
     config.params = { ...config.params, key }
   }
