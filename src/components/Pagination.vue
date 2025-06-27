@@ -30,19 +30,7 @@
       </button>
     </div>
 
-    <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-      <div>
-        <p class="text-sm text-gray-700">
-          Показано
-          <span class="font-medium">{{ from }}</span>
-          до
-          <span class="font-medium">{{ to }}</span>
-          из
-          <span class="font-medium">{{ total }}</span>
-          результатов
-        </p>
-      </div>
-
+    <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-end">
       <div>
         <nav
           class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px"
@@ -150,17 +138,6 @@ interface Emits {
 
 const props = defineProps<Props>()
 const emit = defineEmits<Emits>()
-
-// Вычисляемые свойства
-const from = computed(() => {
-  return props.total > 0 ? (props.currentPage - 1) * props.perPage + 1 : 0
-})
-
-const to = computed(() => {
-  return Math.min(props.currentPage * props.perPage, props.total)
-})
-
-const total = computed(() => props.total)
 
 // Генерация видимых страниц
 const visiblePages = computed(() => {

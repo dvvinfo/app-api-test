@@ -11,7 +11,7 @@ export const useOrdersStore = defineStore('orders', () => {
   const currentPage = ref(1)
   const totalPages = ref(1)
   const totalItems = ref(0)
-  const itemsPerPage = ref(100)
+  const itemsPerPage = ref(10)
   const filters = ref<OrderFilters>({})
 
   // Геттеры
@@ -21,7 +21,7 @@ export const useOrdersStore = defineStore('orders', () => {
   const errorMessage = computed(() => error.value)
 
   // Действия
-  const fetchOrders = async (page = 1, limit = 100) => {
+  const fetchOrders = async (page = 1, limit = 10) => {
     loading.value = true
     error.value = null
     try {

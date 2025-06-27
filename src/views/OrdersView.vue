@@ -5,9 +5,8 @@
       <p class="text-gray-600">Управление и анализ данных о заказах</p>
     </div>
 
-
-    <OrdersCharts />
     <OrdersFilters />
+    <OrdersCharts />
     <OrdersTable />
     <Pagination
       v-if="hasData && totalPages > 1"

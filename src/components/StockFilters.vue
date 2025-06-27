@@ -35,18 +35,18 @@
         :options="brandOptions"
         @change="applyFilters"
       />
-      <!-- Фильтр по типу поставки -->
-      <BaseSelect
-        v-model="supplyType"
-        label="Тип поставки"
-        :options="supplyTypeOptions"
-        @change="applyFilters"
-      />
       <!-- Фильтр по категории -->
       <BaseSelect
         v-model="localFilters.category"
         label="Категория"
         :options="categoryOptions"
+        @change="applyFilters"
+      />
+      <!-- Фильтр по типу поставки -->
+      <BaseSelect
+        v-model="supplyType"
+        label="Тип поставки"
+        :options="supplyTypeOptions"
         @change="applyFilters"
       />
     </div>
@@ -91,39 +91,25 @@ const supplyType = ref<string>('')
 
 // Вычисляемые свойства для минимальных дат
 const minDateFrom = computed(() => {
-  // Минимальная дата для dateFrom - сегодня (после вчера)
-  const today = new Date()
-  return today.toISOString().split('T')[0]
+  return todayDate
 })
 
 const minDateTo = computed(() => {
-  // Минимальная дата для dateTo - выбранная dateFrom или сегодня
-  if (localFilters.value.dateFrom) {
-    return localFilters.value.dateFrom
-  }
-  const today = new Date()
-  return today.toISOString().split('T')[0]
+  return localFilters.value.dateFrom || todayDate
 })
 
 // Вычисляемые свойства для максимальных дат
 const maxDateFrom = computed(() => {
-  // Максимальная дата для dateFrom - выбранная dateTo или +1 год от сегодня
-  if (localFilters.value.dateTo) {
-    return localFilters.value.dateTo
-  }
-  const nextYear = new Date()
-  nextYear.setFullYear(nextYear.getFullYear() + 1)
-  return nextYear.toISOString().split('T')[0]
+  return localFilters.value.dateTo || ''
 })
 
 const maxDateTo = computed(() => {
-  // Максимальная дата для dateTo - +1 год от сегодня
-  const nextYear = new Date()
-  nextYear.setFullYear(nextYear.getFullYear() + 1)
-  return nextYear.toISOString().split('T')[0]
+  const maxDate = new Date()
+  maxDate.setDate(maxDate.getDate() + 30) // Максимум 30 дней вперед
+  return maxDate.toISOString().split('T')[0]
 })
 
-// Опции для селектов
+// Захардкоженные опции для фильтров
 const warehouseOptions = [
   { value: '', label: 'Все склады' },
   { value: 'Коледино', label: 'Коледино' },
@@ -138,6 +124,7 @@ const warehouseOptions = [
   { value: 'Екатеринбург - Испытателей 14г', label: 'Екатеринбург - Испытателей 14г' },
   { value: 'Белые Столбы', label: 'Белые Столбы' },
 ]
+
 const brandOptions = [
   { value: '', label: 'Все бренды' },
   { value: '10974de38dfa215e', label: '10974de38dfa215e' },
@@ -148,14 +135,16 @@ const brandOptions = [
   { value: '728663c27b76a87b', label: '728663c27b76a87b' },
   { value: '89edf2b23057232f', label: '89edf2b23057232f' },
 ]
+
+const categoryOptions = [
+  { value: '', label: 'Все категории' },
+  { value: '9f463620982b6cc9', label: '9f463620982b6cc9' },
+]
+
 const supplyTypeOptions = [
   { value: '', label: 'Все типы' },
   { value: 'supply', label: 'Поставка' },
   { value: 'realization', label: 'Реализация' },
-]
-const categoryOptions = [
-  { value: '', label: 'Все категории' },
-  { value: '9f463620982b6cc9', label: '9f463620982b6cc9' },
 ]
 
 // Синхронизация с store
@@ -215,6 +204,7 @@ const applyFilters = () => {
 
   console.log('Local filters before apply:', localFilters.value) // Логирование локальных фильтров
   console.log('Final filters to apply:', filters) // Логирование финальных фильтров
+
   stocksStore.setFilters(filters)
   stocksStore.fetchStocks()
 }

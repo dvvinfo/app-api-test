@@ -2,9 +2,6 @@
   <div class="bg-white rounded-lg shadow-md overflow-hidden">
     <div class="px-6 py-4 border-b border-gray-200">
       <h3 class="text-lg font-semibold text-gray-800">Данные заказов</h3>
-      <p class="text-sm text-gray-600 mt-1">
-        Всего записей: {{ totalItems }} | Страница {{ currentPage }} из {{ totalPages }}
-      </p>
     </div>
     <div class="overflow-x-auto">
       <table class="min-w-full divide-y divide-gray-200">
@@ -55,9 +52,6 @@ const orders = computed(() => ordersStore.orders)
 const isLoading = computed(() => ordersStore.isLoading)
 const hasError = computed(() => ordersStore.hasError)
 const errorMessage = computed(() => ordersStore.errorMessage)
-const currentPage = computed(() => ordersStore.currentPage)
-const totalPages = computed(() => ordersStore.totalPages)
-const totalItems = computed(() => ordersStore.totalItems)
 
 const retry = () => {
   ordersStore.fetchOrders()

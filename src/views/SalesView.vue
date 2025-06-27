@@ -5,8 +5,8 @@
       <p class="text-gray-600">Управление и анализ данных о продажах</p>
     </div>
 
-    <SalesCharts />
     <SalesFilters />
+    <SalesCharts />
     <SalesTable />
     <Pagination
       v-if="hasData && totalPages > 1"

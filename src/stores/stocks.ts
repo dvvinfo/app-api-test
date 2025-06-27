@@ -11,7 +11,7 @@ export const useStocksStore = defineStore('stocks', () => {
   const currentPage = ref(1)
   const totalPages = ref(1)
   const totalItems = ref(0)
-  const itemsPerPage = ref(100)
+  const itemsPerPage = ref(10)
   const filters = ref<StockFilters>({})
 
   // Геттеры
@@ -21,7 +21,7 @@ export const useStocksStore = defineStore('stocks', () => {
   const errorMessage = computed(() => error.value)
 
   // Действия
-  const fetchStocks = async (page = 1, limit = 100) => {
+  const fetchStocks = async (page = 1, limit = 10) => {
     loading.value = true
     error.value = null
 

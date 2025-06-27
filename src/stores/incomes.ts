@@ -1,27 +1,27 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import { salesApi } from '@/services/api'
-import type { SalesItem, SalesFilters, ApiResponse } from '@/types/api'
+import { incomesApi } from '@/services/api'
+import type { IncomeItem, IncomeFilters, ApiResponse } from '@/types/api'
 
-export const useSalesStore = defineStore('sales', () => {
+export const useIncomesStore = defineStore('incomes', () => {
   // Состояние
-  const sales = ref<SalesItem[]>([])
+  const incomes = ref<IncomeItem[]>([])
   const loading = ref(false)
   const error = ref<string | null>(null)
   const currentPage = ref(1)
   const totalPages = ref(1)
   const totalItems = ref(0)
   const itemsPerPage = ref(10)
-  const filters = ref<SalesFilters>({})
+  const filters = ref<IncomeFilters>({})
 
   // Геттеры
-  const hasData = computed(() => sales.value.length > 0)
+  const hasData = computed(() => incomes.value.length > 0)
   const isLoading = computed(() => loading.value)
   const hasError = computed(() => error.value !== null)
   const errorMessage = computed(() => error.value)
 
   // Действия
-  const fetchSales = async (page = 1, limit = 10) => {
+  const fetchIncomes = async (page = 1, limit = 10) => {
     loading.value = true
     error.value = null
     try {
@@ -30,21 +30,29 @@ export const useSalesStore = defineStore('sales', () => {
         const today = new Date().toISOString().split('T')[0]
         currentFilters.dateFrom = today
       }
-      const response: ApiResponse<SalesItem> = await salesApi.getSales(currentFilters, page, limit)
-      sales.value = response.data
+      if (!currentFilters.dateTo) {
+        const today = new Date().toISOString().split('T')[0]
+        currentFilters.dateTo = today
+      }
+      const response: ApiResponse<IncomeItem> = await incomesApi.getIncomes(
+        currentFilters,
+        page,
+        limit,
+      )
+      incomes.value = response.data
       currentPage.value = response.meta.current_page
       totalPages.value = response.meta.last_page
       totalItems.value = response.meta.total
       itemsPerPage.value = parseInt(response.meta.per_page)
     } catch (err) {
       error.value = err instanceof Error ? err.message : 'Произошла ошибка при загрузке данных'
-      console.error('Error fetching sales:', err)
+      console.error('Error fetching incomes:', err)
     } finally {
       loading.value = false
     }
   }
 
-  const setFilters = (newFilters: SalesFilters) => {
+  const setFilters = (newFilters: IncomeFilters) => {
     filters.value = { ...newFilters }
     currentPage.value = 1
   }
@@ -56,7 +64,7 @@ export const useSalesStore = defineStore('sales', () => {
 
   const goToPage = (page: number) => {
     if (page >= 1 && page <= totalPages.value) {
-      fetchSales(page, itemsPerPage.value)
+      fetchIncomes(page, itemsPerPage.value)
     }
   }
 
@@ -72,10 +80,10 @@ export const useSalesStore = defineStore('sales', () => {
     }
   }
 
-  // TODO: Добавить вычисляемые свойства для графиков, когда будет известна структура SalesItem
+  // TODO: Добавить вычисляемые свойства для графиков, когда будет известна структура IncomeItem
 
   return {
-    sales,
+    incomes,
     loading,
     error,
     currentPage,
@@ -87,7 +95,7 @@ export const useSalesStore = defineStore('sales', () => {
     isLoading,
     hasError,
     errorMessage,
-    fetchSales,
+    fetchIncomes,
     setFilters,
     clearFilters,
     goToPage,

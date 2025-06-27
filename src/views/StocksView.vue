@@ -6,11 +6,10 @@
         <h1 class="text-3xl font-bold text-gray-900 mb-2">Склады</h1>
         <p class="text-gray-600">Управление и анализ данных складов</p>
       </div>
-
-      <!-- Графики и статистика -->
-      <StockCharts v-if="hasData" />
       <!-- Фильтры -->
       <StockFilters />
+      <!-- Графики и статистика -->
+      <StockCharts v-if="hasData" />
 
       <!-- Таблица данных -->
       <StockTable />
